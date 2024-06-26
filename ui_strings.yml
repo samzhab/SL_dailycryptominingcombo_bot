@@ -1,0 +1,145 @@
+start_message: "🎉🇪🇹 ሰላም %{first_name} እንኳን ደና መጡ! 🎊🤗
+Hello, %{first_name}! Welcome to @SamaelLabs' Telegram Bot 😃👋🏼 ምን ማረግ እንደምችል ለማየት
+  /help ይላኩ \n\n | Use the /help command to see what I can do."
+help_message: "This bot provides daily combinations for various coin/token
+mining bots such as Hamster, Gemz, PixelVerse, MemeFi, and more as they become
+available. Users can choose which mining bot they need a daily code for, and the
+bot sends a single file showing the successful daily combo picture stored in a
+local folder. Additionally, the bot provides links to other new mining bots."
+invitation_text: "የእኛን ልዩ የድር መተግበሪያ በመክፈት ተጨማሪ ባህሪያትን እና ይዘትን ያስሱ!
+ለመጀመር ከዚህ በታች ያለውን አዝራር ጠቅ ያድርጉ። \n\n| Explore more features and interactive
+content by opening our special Web App! Click the button below to get started. (make sure to checkout our terms and privacy before you do)"
+under_construction_message: "የመረጡትን ምረጫ አሁን እንዴት እደማስተናግደው እያሰብኩ ስለሆነ ሌላ
+ይምረጡ። \n\n | That command is currently being developed. Choose another."
+terms_of_use_amharic: "የየዘመነ የአጠቃቀም መመሪያ
+ለመጨረሻ ጊዜ የተሻሻለው፡ June 26, 2024
+1 መግቢያ
+እንኳን ወደ @SlCryptMineComboBot እንኳን በደህና መጡ፣ ፈቃደኛ ለሆኑ አዋቂዎች የግል ውይይት አደራጅ
+ለኤግዚቢሽን የተሰራ የቴሌግራም ቦት ነው።
+ለግል የቴሌግራም ቻናል/ቡድን ተመልካቾች ተስማሚ ተግባራት። ከቦታችን ጋር በመገናኘት፣
+ተፈጥሮን በማሳየት በነዚህ የአጠቃቀም ውሎች ተስማምተሃል
+2. የቦት አጠቃቀም
+ቦት ግብይቶችን እንደ ማረጋገጫ እና የማረጋገጫ ዘዴ ብቻ ለመጠቀም ያለመ ነው።
+ክፍያ የሚያስፈልጋቸው ዕቃዎችን እና አገልግሎቶችን በኢትዮቴሌኮም ቴሌብር እንዲሰራ ማድረግ።
+3. የተጠቃሚ ምግባር
+በግል አጠቃቀም ወሰን ውስጥ ከቦት ጋር እንዲገናኙ ይበረታታሉ።
+አላግባብ መጠቀም፣ አይፈለጌ መልእክት ማስተላለፍ፣ አጸያፊ መልዕክቶችን ማስተላለፍ ወይም መግባትን ጨምሮ
+ሕገ-ወጥ ድርጊቶች መዳረሻዎን ወደ መቋረጥ ያመራሉ.
+4. አእምሯዊ ንብረት
+በቦት የሚታየው ይዘት እና ተግባር የታሰበ ብቻ ነው።
+ለማሳያ ዓላማዎች. ማባዛት፣ ማሰራጨት፣ ወይም ያልተፈቀደ አጠቃቀም
+ከማሳያ አውድ ውጭ የተከለከለ ነው።
+5. ማስተባበያዎች
+ቦት የሚቀርበው 'እንደሆነ' እና 'እንደሚገኝ' ለማሳያ ዓላማዎች ብቻ ነው።
+ስለ ትክክለኝነት፣ አስተማማኝነት እና ተፈጻሚነት ምንም አይነት ዋስትና አንሰጥም።
+ለተወሰኑ የንግድ ፍላጎቶች የታዩት ተግባራት።
+6. የተጠያቂነት ገደብ
+በእርስዎ Bot አጠቃቀም ላይ በመመስረት ለሚደረጉ ውሳኔዎች ወይም እርምጃዎች ተጠያቂ አይደለንም።
+7. ውሎች ላይ ለውጦች
+እነዚህን ውሎች በማንኛውም ጊዜ የማዘመን መብታችን የተጠበቀ ነው። የእርስዎ ቀጣይ አጠቃቀም
+ቦት ከማንኛውም ለውጦች በኋላ የተሻሻሉ ውሎችን መቀበላችሁን ያሳያል።
+8. የውሂብ አሰባሰብ እና አጠቃቀም
+8.1 የተጠቃሚ ውሂብ አጠቃቀም
+ምንም የግል መረጃ ስለማይሰበሰብ ከሶስተኛ ወገኖች ጋር መጋራት የለም።
+ሰልፎች በአጠቃላይ፣ በይፋ የሚገኝ መረጃ ወይም ላይ የተመሰረቱ ናቸው።
+መላምታዊ ሁኔታዎች. በማሳያ ሂደት ውስጥ ጥቅም ላይ የሚውሉ ሁሉም የግል መረጃዎች
+እንደ GDPR፣ CCPA፣ ወዘተ ካሉ የውሂብ ጥበቃ ደንቦች ጋር በማጣጣም ያለተጠቃሚው ፈቃድ አይጋራም።
+9. የአስተዳደር ህግ
+እነዚህ ውሎች የሚተዳደሩት እና የሚነገሩት በህጎቹ መሰረት ነው።
+ኢትዮጵያ የሕግ አንቀጾቿን ሳይመለከቱ።
+10. ሙሉ ስምምነት
+እነዚህ ውሎች በአንተ እና በእኛ መካከል ያለውን አጠቃላይ ስምምነት ይመሰርታሉ
+የቦት አጠቃቀምን እና ሁሉንም የቀድሞ ወይም ወቅታዊ ግንኙነቶችን ይተካ እና
+የቃል ወይም የጽሑፍ ሀሳቦች።"
+terms_of_use_english: "Updated Terms of Use
+Last Amended: June 26, 2024
+1. Introduction
+Welcome to @SlCryptMineComboBot, a private chat organizer for consenting adults
+is a Telegram bot crafted to exhibit
+functionalities suitable for a private telegram channel/group audience. By interacting with our bot,
+you agree to these Terms of Use, acknowledging the demonstration nature for
+potential application insights.
+2. Use of the Bot
+@SlCryptMineComboBot is designed only to be used with PRIVATE channels/groups
+ It aims to provide consenting adults a private platform to have private conversation.
+3. User Conduct
+Users are encouraged to interact with the bot within the scope of private use.
+Misuse, including spamming, transmitting offensive messages, or
+engaging in illegal activities, will lead to access termination.
+4. Intellectual Property
+Content and functionalities demonstrated by the bot are intended solely for
+demonstration. Reproduction, distribution, or unauthorized use outside the
+demonstration context is prohibited.
+5. *Disclaimers
+The bot is provided 'as is' and 'as available' for demonstration purposes only.
+We make no warranties regarding the accuracy, reliability, or applicability of
+the demonstrated functionalities for specific business needs.
+6. Limitation of Liability
+We are not liable for decisions or actions taken based on the bot's use.
+7. Changes to Terms
+We reserve the right to update these Terms at any time. Continued use after
+changes signifies acceptance of the amended terms."
+privacy_policy_amharic: "የዘመነ የግላዊነት መመሪያ
+ለመጨረሻ ጊዜ የተሻሻለው፡ June 26, 2024
+1 መግቢያ
+ይህ መመሪያ ከ@SlCryptMineComboBot ጋር ሲገናኙ የአያያዝ ልምዶቻችንን ይዘረዝራል።
+በሠርቶ ማሳያዎች ወቅት የእኛን የግል መረጃ አለመሰብሰብ ላይ አፅንዖት መስጠት.
+2. ምንም የግል መረጃ ስለማይሰበሰብ ከሶስተኛ ወገኖች ጋር መጋራት የለም።
+ሰልፎች በአጠቃላይ፣ በይፋ የሚገኝ መረጃ ወይም ላይ የተመሰረቱ ናቸው።
+መላምታዊ ሁኔታዎች. በማሳያ ሂደት ውስጥ ጥቅም ላይ የሚውሉ ሁሉም የግል መረጃዎች
+እንደ GDPR፣ CCPA፣ ወዘተ ካሉ የውሂብ ጥበቃ ደንቦች ጋር በማጣጣም ያለተጠቃሚው ፈቃድ አይጋራም።
+4.  የውሂብ ደህንነት
+ከእርስዎ የምንሰበስበውን መረጃ ለመጠበቅ ምክንያታዊ እርምጃዎችን እንወስዳለን።
+ሆኖም የትኛውም ድር ጣቢያ ወይም የበይነመረብ ስርጭት ሙሉ በሙሉ ደህንነቱ የተጠበቀ ነው። አንችልም
+የመረጃዎን ደህንነት ዋስትና ይስጡ ።
+5.  የተጠቃሚ መብቶች
+ተጠቃሚዎች በማንኛውም ጊዜ ከቦት ጋር ያላቸውን ግንኙነት የማቆም መብት አላቸው። የተሰጠው
+የግል ውሂብ አለመሰብሰብ፣ የውሂብ እርማትን በተመለከተ የተለመዱ ስጋቶች ወይም
+መሰረዝ የማይተገበር ነው።
+6. የልጆች ግላዊነት
+ቦት ከ18 ዓመት በታች ለሆኑ ህጻናት ጥቅም ላይ እንዲውል የታሰበ አይደለም።
+ከ18 አመት በታች ከሆኑ ህጻናት መረጃን እያወቁ መሰብሰብ።
+7. በዚህ የግላዊነት ፖሊሲ ላይ የተደረጉ ለውጦች
+ይህንን የግላዊነት መመሪያ በማንኛውም ጊዜ ማዘመን እንችላለን። ማንኛውንም እናሳውቅዎታለን
+አዲሱን የግላዊነት ፖሊሲ በዚህ ገጽ ላይ በመለጠፍ ይለወጣል።
+8. ያግኙን
+ስለዚህ የግላዊነት ፖሊሲ ማንኛቸውም ጥያቄዎች ካሉዎት፣ እባክዎን በ ላይ ያግኙን።
+t.me/SamaelLabs
+ቦትን በመጠቀም፣ በዚህ የግላዊነት መመሪያ ተስማምተሃል።"
+privacy_policy_english: "Updated Privacy Policy
+Last Amended: June 26, 2024
+1. Introduction This Privacy Policy describes how we collect, use, and disclose
+your information in connection with your use of the @SlCryptMineComboBot, (the 'Bot').
+2. Since no personal data is collected, there is no sharing with third parties.
+Demonstrations are based on generic, publicly available information or
+hypothetical scenarios. All personal information that is used in the process of demonstration
+is not shared without the user's consent, aligning with data protection regulations like GDPR, CCPA, etc.
+3. Data Security
+We take reasonable steps to protect the information we collect from you.
+However, no website or internet transmission is completely secure. We cannot
+guarantee the security of your information.
+4. Children's Privacy
+The Bot is not intended for use by children under the age of 18. We do not
+knowingly collect information from children under 18.
+5. Changes to This Privacy Policy
+We may update this Privacy Policy at any time. We will notify you of any
+changes by posting the new Privacy Policy on this page.
+6. Contact Us
+If you have any questions about this Privacy Policy, please contact us at
+t.me/SamaelLabs.
+By using the Bot, you agree to this Privacy Policy."
+request_error_info: "ጥያቄህን በማስተናገድ ላይ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ.
+| There was an error processing your request. Please try again."
+error_loading_data_notice: "ውሂብ በመጫን ጊዜ ስህተት። ቆይተው እንደገና ይሞክሩ። | Error while loading data. Try again later."
+no_entries_found_notice: "ምንም ግቤቶች አልተገኙም። | No entries found for"
+schedule_updated_with_notice: "መርሐግብር የዘመነው በ | Schedule updated with"
+schedule_entry_exists_notice: "የመርሐግብር ግቤት አስቀድሞ አለ። | Schedule entry already exists."
+removed_entries_notice: "የያዙ የተወገዱ ግቤቶች | Removed entries containing"
+booking_request_info: "የቦታ ማስያዣ ክፍያዎን እያስተናገድን ነው… \n\n | Hi! Your booking request is received."
+complete_payment_button: "💰 ክፈል | Complete Payment 🛒"
+data_reset_remind: "እርግጠኛ ነዎት ሁሉንም የተከማቸ ውሂብ ዳግም ማስጀመር ይፈልጋሉ? \n\n
+| Are you sure you want to reset all stored data?"
+export_data_message: "የተከማቸ ውሂብ | Stored Data: \n"
+data_reset_confirmation: "የተከማቸ ውሂብ ዳግም ተጀምሯል። | Stored data has been reset."
+payment_success: "🎉🇪🇹 ክፍያዎን በሚገባ ጨርሰዋል። ለግብይቶ እናመሰግናለን። \n Your payment was successful! Thank you for your purchase.😊🛍️"
+payment_error: "⚠️🇪🇹 በድጋሚ ይሞክሩት። ወይም የደንበኛ ረዳቶቻችንን ያናግሩ። \n There was a problem with your payment. Please try again or contact our customer support. 📞💔"
