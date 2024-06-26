@@ -350,7 +350,6 @@ class SlCryptMineComboBot
       photo: image_file,
       caption: "Check out today's combo! Join our Channel @SamaelLabs"
     )
-    byebug
     send_squad_invites(bot, callback_query.message)
   end
 
