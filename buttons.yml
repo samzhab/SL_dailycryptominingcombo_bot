@@ -1,0 +1,11 @@
+buttons:
+  - text: '🐹 Hamster Combat'
+    callback_data: 'Hamster'
+  - text: '⭐️ PixelVerse'
+    callback_data: 'PixelVerse'
+  - text: '💎 Gemz'
+    callback_data: 'Gemz'
+  - text: '⭐️ Chaindrops'
+    callback_data: 'Chaindrops'
+  - text: '💎 Swopin'
+    callback_data: 'Swopin'
