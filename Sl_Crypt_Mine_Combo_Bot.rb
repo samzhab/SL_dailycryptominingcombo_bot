@@ -367,7 +367,6 @@ class SlCryptMineComboBot
       photo: image_file,
       caption: "Check out today's combo! Join our Channel @SamaelLabs"
     )
-    byebug
     send_squad_invites(bot, callback_query.message)
   end
 
@@ -396,7 +395,7 @@ class SlCryptMineComboBot
 
     bot.api.send_message(
       chat_id: message.chat.id,
-      text: "And don't forget to join our Squad.",
+      text: "🎁🎁You want to Participate in 5 X Telegram 🎁Giveaways for 3 Months? Join our Channel.",
       **options
     )
   rescue StandardError => e
