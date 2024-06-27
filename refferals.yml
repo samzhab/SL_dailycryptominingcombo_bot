@@ -31,7 +31,7 @@ refferals:
     url: "https://t.me/hexn_bot/app?startapp=cd493fe5-a50c-42c9-9d9d-d5f8c514b482"
   - bot: "Pixel Tap"
     url: "https://t.me/pixelversexyzbot?start=1342362340"
-  - bot: "Hold Wallet"
+  - bot: "Meme Fi"
     url: "https://t.me/memefi_coin_bot?start=r_7e15751765"
   - bot: "Fox Ton Master"
     url: "https://t.me/foxtonmaster_bot?start=1342362340"
@@ -77,4 +77,3 @@ refferals:
     url: "https://t.me/solex_ai_bot?start=MTM0MjM2MjM0MA=="
   - bot: "ChainCrops"
     url: "https://t.me/chaincrops_bot?start=1342362340"
-  - bot

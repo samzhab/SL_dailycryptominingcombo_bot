@@ -77,7 +77,6 @@ class SlCryptMineComboBot
     end
 
     def run(token)
-      @created_channels = []
       BotHelpers.validate_presence(token, 'token')
       bot_instance = new # Create an instance of MyTelegramBot
       Telegram::Bot::Client.run(token) do |bot|
@@ -91,18 +90,17 @@ class SlCryptMineComboBot
 
   UI_STRINGS = load_ui_strings
   REFFERALS = load_refferals
+
   def bot_listen(bot)
     puts '-----------------------------------------------------------------'
     bot.listen do |update|
       LOGGER.info("Received update: #{update.to_json}")
       case update
       when Telegram::Bot::Types::Message
-        if update.photo
-          respond_to_image(bot, update)
-        else
-          respond_to_message(bot, update)
-        end
+        # clear_screen(bot, update.from.id, update.message.message_id)
+        respond_to_message(bot, update)
       when Telegram::Bot::Types::CallbackQuery
+        clear_screen(bot, update.from.id, update.message.message_id)
         handle_callback_query(bot, update)
       end
     end
@@ -116,10 +114,13 @@ class SlCryptMineComboBot
       if !command.nil? && !command.empty?
         case command.first
         when '/start', '/start@SlCryptMineComboBot'
+          # clear_screen(bot, message.from.id, message.message_id)
           send_data_with_buttons(bot, message)
         when '/privacy', '/privacy@SlCryptMineComboBot'
+          # clear_screen(bot, message.from.id, message_id)
           send_privacy_message(bot, message)
         when '/terms', '/terms@SlCryptMineComboBot'
+          # clear_screen(bot, message.from.id, message_id)
           send_terms_message(bot, message)
         else
           send_helpful_message(bot, message)
@@ -160,8 +161,9 @@ class SlCryptMineComboBot
   end
 
   def send_data_with_buttons(bot, message)
+    # clear_screen(bot, message.from.id, message.message_id)
     # Prepare message text
-    message_text = "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+    message_text = "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
 
     # Load buttons from YAML file
     button_data = YAML.load_file('buttons.yml')['buttons']
@@ -219,11 +221,38 @@ class SlCryptMineComboBot
     LOGGER.error("Error in send_webapp_dir: #{e.class}: #{e.message}")
   end
 
-  def clear_screen(chat_id, message_id)
-    Telegram::Bot::Client.run(token) do |bot|
+#   deleteMessage
+# Use this method to delete a message, including service messages, with the following limitations:
+# - A message can only be deleted if it was sent less than 48 hours ago.
+# - Service messages about a supergroup, channel, or forum topic creation can't be deleted.
+# - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
+# - Bots can delete outgoing messages in private chats, groups, and supergroups.
+# - Bots can delete incoming messages in private chats.
+# - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+# - If the bot is an administrator of a group, it can delete any message there.
+# - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+# Returns True on success.
+#
+# Parameter	Type	Required	Description
+# chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+# message_id	Integer	Yes	Identifier of the message to delete
+
+# deleteMessages
+# Use this method to delete multiple messages simultaneously. If some of the specified messages can't be found, they are skipped. Returns True on success.
+#
+# Parameter	Type	Required	Description
+# chat_id	Integer or String	Yes	Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+# message_ids	Array of Integer	Yes	A JSON-serialized list of 1-100 identifiers of messages to delete. See deleteMessage for limitations on which messages can be deleted
+
+  def clear_screen(bot, chat_id, message_id)
+    begin
+      LOGGER.info("Clering the screen for user #{chat_id} - message id - #{message_id}")
       bot.api.delete_message(chat_id: chat_id, message_id: message_id)
+    rescue StandardError => e
+      LOGGER.error("Error in clear_screen: #{e.class}: #{e.message}")
     end
   end
+
 
   def handle_callback_query(bot, callback_query)
     BotHelpers.validate_presence([bot, callback_query], %w[bot callback_query])
@@ -231,14 +260,19 @@ class SlCryptMineComboBot
     begin
       case callback_query.data
       when 'Hamster'
+        # clear_screen(bot, callback_query.message.chat.id, callback_query.message.message_id)
         hamster_combo(bot, callback_query)
       when 'PixelVerse'
+        # clear_screen(bot, callback_query.message.chat.id, callback_query.message.message_id)
         pixelverse_combo(bot, callback_query)
       when 'Gemz'
+        # clear_screen(bot, callback_query.message.chat.id, callback_query.message.message_id)
         gemz_combo(bot, callback_query)
       when 'Swopin'
+        # clear_screen(bot, callback_query.message.chat.id, callback_query.message.message_id)
         swopin_combo(bot, callback_query)
-      when 'ChainDrops'
+      when 'Chaindrops'
+        # clear_screen(bot, callback_query.message.chat.id, callback_query.message.message_id)
         chaindrops_combo(bot, callback_query)
       else ''
       end
@@ -251,7 +285,7 @@ class SlCryptMineComboBot
 
   def hamster_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው combo ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/hamster/hamster.jpg'  # Replace with the actual path to your image file
@@ -261,14 +295,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "የዛሬውን ኮምቦ ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+      caption: "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def pixelverse_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው combo ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/pixelverse/pixelverse.jpg'  # Replace with the actual path to your image file
@@ -278,14 +312,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+      caption: "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def gemz_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው combo ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/gemz/gemz.jpg'  # Replace with the actual path to your image file
@@ -295,14 +329,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+      caption: "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def swopin_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው combo ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/swopin/swopin.jpg'  # Replace with the actual path to your image file
@@ -312,14 +346,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+      caption: "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def chaindrops_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው combo ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/chaindrops/chaindrops.jpg'  # Replace with the actual path to your image file
@@ -329,7 +363,7 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+      caption: "የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
@@ -359,7 +393,7 @@ class SlCryptMineComboBot
 
     bot.api.send_message(
       chat_id: message.chat.id,
-      text: "🎁🎁🎁🎁🎁በ 5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) መሳተፍ ይፈልጋሉ? @SamaelLabsን ይቀላቀሉ",
+      text: "🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ @SamaelLabsን ይቀላቀሉ",
       **options
     )
   rescue StandardError => e
