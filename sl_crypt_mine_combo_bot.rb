@@ -65,13 +65,13 @@ class SlCryptMineComboBot
       end
     end
 
-    def load_refferals
-      file_path = 'refferals.yml'
+    def load_referrals
+      file_path = 'referrals.yml'
       if File.exist?(file_path)
         YAML.load_file(file_path)
       else
-        error_message = "Error: Refferals file not found at #{file_path}"
-        handle_error(RuntimeError.new(error_message), 'load_refferals')
+        error_message = "Error: Referrals file not found at #{file_path}"
+        handle_error(RuntimeError.new(error_message), 'load_referrals')
         {}
       end
     end
@@ -89,7 +89,7 @@ class SlCryptMineComboBot
   end
 
   UI_STRINGS = load_ui_strings
-  REFFERALS = load_refferals
+  REFERRALS = load_referrals
 
   def bot_listen(bot)
     puts '-----------------------------------------------------------------'
@@ -326,13 +326,13 @@ class SlCryptMineComboBot
     BotHelpers.validate_presence([bot, message], %w[bot message])
 
     # Access the array of referrals
-    referrals_array = REFFERALS['refferals']
+    referrals_array = REFERRALS['referrals']
 
     # Select two random items from the array
     selected_referrals = referrals_array.shuffle.take(2)
 
     # Create inline keyboard buttons with the selected items
-    refferals_buttons = selected_referrals.map do |referral|
+    referrals_buttons = selected_referrals.map do |referral|
       Telegram::Bot::Types::InlineKeyboardButton.new(
         text: referral['bot'],
         url: referral['url'],
@@ -340,7 +340,7 @@ class SlCryptMineComboBot
     end
 
     # Create inline keyboard markup with the selected buttons
-    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [refferals_buttons])
+    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [referrals_buttons])
     message_text = "🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ ቻናላችንን ይቀላቀሉ"
     # Send message with inline keyboard
     bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
