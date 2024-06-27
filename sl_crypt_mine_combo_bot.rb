@@ -135,7 +135,6 @@ class SlCryptMineComboBot
     # Regular expression to extract the command, link, username (optional), day (optional), and time (optional)
     # command = text.match(/^\/(set\d|upd|rmv)\s+(?:(t\.me\/\S+)|(\w+))(?:\s+(\w+)(?:\s+(\d{4})))?/)
     return '' if text.nil?
-
     text.split
   end
 
@@ -205,22 +204,6 @@ class SlCryptMineComboBot
       # Handle invalid time format
       nil
     end
-  end
-
-  def send_webapp_spa(bot, message, webapp_url)
-    BotHelpers.validate_presence([bot, message, webapp_url], %w[bot message webapp_url])
-    options = {
-      reply_markup: Telegram::Bot::Types::InlineKeyboardMarkup.new(
-        inline_keyboard: [
-          [Telegram::Bot::Types::InlineKeyboardButton.new(text: UI_STRINGS['open_webapp_button'],
-                                                          web_app: { url: webapp_url })]
-        ]
-      )
-    }
-    bot.api.send_message(chat_id: message.chat.id,
-                         text: UI_STRINGS['spa_info'], **options)
-  rescue StandardError => e
-    LOGGER.error("Error in send_webapp_dir: #{e.class}: #{e.message}")
   end
 
   def clear_screen(bot, chat_id, message_id)
@@ -349,24 +332,18 @@ class SlCryptMineComboBot
     selected_referrals = referrals_array.shuffle.take(2)
 
     # Create inline keyboard buttons with the selected items
-    inline_keyboard_buttons = selected_referrals.map do |referral|
+    refferals_buttons = selected_referrals.map do |referral|
       Telegram::Bot::Types::InlineKeyboardButton.new(
         text: referral['bot'],
-        url: referral['url']
+        url: referral['url'],
       )
     end
 
-    options = {
-      reply_markup: Telegram::Bot::Types::InlineKeyboardMarkup.new(
-        inline_keyboard: [inline_keyboard_buttons]
-      )
-    }
-
-    bot.api.send_message(
-      chat_id: message.chat.id,
-      text: '🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ ቻናላችንን ይቀላቀሉ',
-      **options
-    )
+    # Create inline keyboard markup with the selected buttons
+    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [refferals_buttons])
+    message_text = "🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ ቻናላችንን ይቀላቀሉ"
+    # Send message with inline keyboard
+    bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
   rescue StandardError => e
     LOGGER.error("Error in send_squad_invites: #{e.class}: #{e.message}")
   end
