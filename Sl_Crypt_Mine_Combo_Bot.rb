@@ -108,80 +108,6 @@ class SlCryptMineComboBot
     end
   end
 
-  def respond_to_image(bot, update)
-    rename_old_data_file
-    LOGGER.info("Responding to photo message from user #{update.from.id}")
-    text = extract_text_from_image(bot, update)
-    # Split the text by newline characters
-    if text.match?(/Successful/)
-      lines = text.split
-
-      # Filter out empty lines and collect specific values
-      lines.reject(&:empty?).select do |line|
-        line.match?(%r{Successful|-?\d+(,\d+)*\s?\(\w+\)|\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2}|Transfer Money|BD[\dA-Z]+})
-      end
-      # Define a regex pattern to match known currency codes
-      currency_pattern = /\((ETB|USD|EUR|RUB|GBP|CAD|INR|KRW|BRL|ZAR)\)/
-      currency = 'ETB'
-      amount = ''
-      unless lines.find { |word| word.match?(currency_pattern) }.nil?
-        currency = lines.find { |word| word.match?(currency_pattern) }.gsub('(', '').gsub(')', '')
-      end
-      unless lines.find { |word| word.match?(/\d+\.\d{2}$/) }.nil?
-        amount = lines.find { |word| word.match?(/\d+\.\d{2}$/) }.gsub('-', '').gsub('—', '')
-      end
-      # Extracting values based on patterns
-      telebirr_transaction = { 'status' => lines.find { |word| word == 'Successful' },
-                               'amount' => amount,
-                               'currency' => currency,
-                               'date' => lines.find { |word| word.match?(%r{\d{4}/\d{2}/\d{2}}) },
-                               'time' => lines.find { |word| word.match?(/\d{2}:\d{2}:\d{2}/) },
-                               'code' => lines.find { |word| word.match?(/[A-Z0-9]{10}/) } }
-      LOGGER.info("Updating verification code entries from transaction code from photo message from user #{update.from.id}")
-      # Save transaction code for telebirr in data.yaml
-      verification_code = ['/verify', telebirr_transaction['code']]
-      if update.chat.type == 'private'
-        handle_private_verification(bot, update, verification_code)
-      else
-        handle_group_verification(bot, update, verification_code)
-      end
-      # Send the extracted text back to the user
-      LOGGER.info("Responding to photo message from user #{update.from.id} with OCR extracted text: #{telebirr_transaction}")
-      bot.api.send_message(chat_id: update.chat.id, text:
-        "Extracted text reads: #{telebirr_transaction}")
-    else
-      LOGGER.info("Responding to photo message from user #{update.from.id} with OCR extracted text doesn't contain key terms: #{text}")
-      bot.api.send_message(chat_id: update.chat.id, text:
-        "Extracted text reads: #{text}")
-    end
-  end
-
-  def extract_text_from_image(bot, update)
-    LOGGER.info("Extracting text from photo message from user #{update.from.id}")
-    # Get the photo with the highest resolution
-    photo = update.photo.last
-
-    # Download the photo
-    file = bot.api.get_file(file_id: photo.file_id)
-    # Get the photo with the highest resolution
-
-    # Construct the image_path
-    image_path = "telebirr_confirmations/#{Time.now}_downloaded_image.jpg"
-
-    # Construct the file_path
-    file_path = "https://api.telegram.org/file/bot#{ENV['TELEGRAM_BOT_TOKEN']}/#{file.file_path}"
-
-    # Download the photo using Net::HTTP
-    uri = URI.parse(file_path)
-    response = Net::HTTP.get_response(uri)
-
-    # Write the response body (image data) to the local file
-    File.open(image_path, 'wb') { |file| file.write(response.body) }
-    # Perform OCR on the image
-    image_text = RTesseract.new(image_path)
-    image_text.to_s
-  end
-
   def respond_to_message(bot, message)
     LOGGER.info("Responding to message from user #{message.from.id}: '#{message.text}'")
     BotHelpers.validate_presence([bot, message], %w[bot message])
@@ -234,27 +160,27 @@ class SlCryptMineComboBot
   end
 
   def send_data_with_buttons(bot, message)
-      # Prepare message text
-      message_text = "Choose a Crypto Mining Game"
+    # Prepare message text
+    message_text = "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
 
-      # Create inline keyboard button
-      options = [
-        Telegram::Bot::Types::InlineKeyboardButton.new(
-          text: 'Hamster Combat',
-          callback_data: 'Hamster'
-        ), Telegram::Bot::Types::InlineKeyboardButton.new(
-          text: 'PixelVerse',
-          callback_data: 'PixelVerse'
-        ), Telegram::Bot::Types::InlineKeyboardButton.new(
-          text: 'Gemz',
-          callback_data: 'Gemz'
-        )
-      ]
-      markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [options])
+    # Load buttons from YAML file
+    button_data = YAML.load_file('buttons.yml')['buttons']
 
-      # Send message with inline keyboard
-      bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
+    # Randomly select 2 buttons
+    selected_buttons = button_data.sample(2).map do |button|
+      Telegram::Bot::Types::InlineKeyboardButton.new(
+        text: button['text'],
+        callback_data: button['callback_data']
+      )
+    end
+
+    # Create inline keyboard markup with the selected buttons
+    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [selected_buttons])
+
+    # Send message with inline keyboard
+    bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
   end
+
 
   def parse_time(time_of_day_string, target_date)
     # Attempt to parse with HH:MM format
@@ -310,6 +236,10 @@ class SlCryptMineComboBot
         pixelverse_combo(bot, callback_query)
       when 'Gemz'
         gemz_combo(bot, callback_query)
+      when 'Swopin'
+        swopin_combo(bot, callback_query)
+      when 'ChainDrops'
+        chaindrops_combo(bot, callback_query)
       else ''
       end
     rescue StandardError => e
@@ -321,7 +251,7 @@ class SlCryptMineComboBot
 
   def hamster_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "Today's Combo is")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/hamster/hamster.jpg'  # Replace with the actual path to your image file
@@ -331,14 +261,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "Check out today's combo! Join our Channel @SamaelLabs"
+      caption: "የዛሬውን ኮምቦ ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def pixelverse_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "Today's Combo is")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/pixelverse/pixelverse.jpg'  # Replace with the actual path to your image file
@@ -348,14 +278,14 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "Check out today's combo! Join our Channel @SamaelLabs"
+      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
 
   def gemz_combo(bot, callback_query)
     # Send the formatted message
-    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "Today's Combo is")
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
 
     # Prepare the image file for upload
     image_path = 'dailycombos/gemz/gemz.jpg'  # Replace with the actual path to your image file
@@ -365,7 +295,41 @@ class SlCryptMineComboBot
     bot.api.send_photo(
       chat_id: callback_query.message.chat.id,
       photo: image_file,
-      caption: "Check out today's combo! Join our Channel @SamaelLabs"
+      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+    )
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def swopin_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+
+    # Prepare the image file for upload
+    image_path = 'dailycombos/swopin/swopin.jpg'  # Replace with the actual path to your image file
+    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+
+    # Send the image as a photo
+    bot.api.send_photo(
+      chat_id: callback_query.message.chat.id,
+      photo: image_file,
+      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
+    )
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def chaindrops_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: "የዛሬው ኮምቦ ነው።")
+
+    # Prepare the image file for upload
+    image_path = 'dailycombos/chaindrops/chaindrops.jpg'  # Replace with the actual path to your image file
+    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+
+    # Send the image as a photo
+    bot.api.send_photo(
+      chat_id: callback_query.message.chat.id,
+      photo: image_file,
+      caption: "የዛሬውን ጥምር ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs"
     )
     send_squad_invites(bot, callback_query.message)
   end
@@ -395,7 +359,7 @@ class SlCryptMineComboBot
 
     bot.api.send_message(
       chat_id: message.chat.id,
-      text: "🎁🎁You want to Participate in 5 X Telegram 🎁Giveaways for 3 Months? Join our Channel.",
+      text: "🎁🎁🎁🎁🎁በ 5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) መሳተፍ ይፈልጋሉ? @SamaelLabsን ይቀላቀሉ",
       **options
     )
   rescue StandardError => e
