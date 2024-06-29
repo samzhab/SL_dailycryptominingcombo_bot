@@ -239,7 +239,9 @@ class SlCryptMineComboBot
       bot.api.send_message(chat_id: callback_query.from.id,
                            text: UI_STRINGS['request_error_info'])
     end
-  
+  end
+
+
   def hamster_combo(bot, callback_query)
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
