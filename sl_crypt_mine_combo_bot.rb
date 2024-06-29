@@ -207,7 +207,7 @@ class SlCryptMineComboBot
   end
 
   def clear_screen(bot, chat_id, message_id)
-    LOGGER.info("Clering the screen for user #{chat_id} - message id - #{message_id}")
+    LOGGER.info("Clearing the screen for user #{chat_id} - message id - #{message_id}")
     bot.api.delete_message(chat_id: chat_id, message_id: message_id)
   rescue StandardError => e
     LOGGER.error("Error in clear_screen: #{e.class}: #{e.message}")
@@ -226,8 +226,12 @@ class SlCryptMineComboBot
         gemz_combo(bot, callback_query)
       when 'Swopin'
         swopin_combo(bot, callback_query)
-      when 'Chaindrops'
-        chaindrops_combo(bot, callback_query)
+      when 'Chaincrops'
+        chaincrops_combo(bot, callback_query)
+      when 'Catpaws'
+        catpaws_combo(bot, callback_query)
+      when 'Tapcoin'
+        tapcoin_combo(bot, callback_query)
       else ''
       end
     rescue StandardError => e
@@ -235,22 +239,39 @@ class SlCryptMineComboBot
       bot.api.send_message(chat_id: callback_query.from.id,
                            text: UI_STRINGS['request_error_info'])
     end
-  end
-
+  
   def hamster_combo(bot, callback_query)
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
 
-    # Prepare the image file for upload
-    image_path = 'dailycombos/hamster/hamster.jpg' # Replace with the actual path to your image file
-    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+    # Prepare the file for upload
+    base_path = 'dailycombos/hamster'
+    jpg_file = 'hamster.jpg'
+    mp4_file = 'hamster.mp4'
 
-    # Send the image as a photo
-    bot.api.send_photo(
-      chat_id: callback_query.message.chat.id,
-      photo: image_file,
-      caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
-    )
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
     send_squad_invites(bot, callback_query.message)
   end
 
@@ -258,16 +279,34 @@ class SlCryptMineComboBot
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
 
-    # Prepare the image file for upload
-    image_path = 'dailycombos/pixelverse/pixelverse.jpg' # Replace with the actual path to your image file
-    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+    # Prepare the file for upload
+    base_path = 'dailycombos/pixelverse'
+    jpg_file = 'pixelverse.jpg'
+    mp4_file = 'pixelverse.mp4'
 
-    # Send the image as a photo
-    bot.api.send_photo(
-      chat_id: callback_query.message.chat.id,
-      photo: image_file,
-      caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
-    )
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
     send_squad_invites(bot, callback_query.message)
   end
 
@@ -275,16 +314,34 @@ class SlCryptMineComboBot
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
 
-    # Prepare the image file for upload
-    image_path = 'dailycombos/gemz/gemz.jpg' # Replace with the actual path to your image file
-    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+    # Prepare the file for upload
+    base_path = 'dailycombos/gemz'
+    jpg_file = 'gemz.jpg'
+    mp4_file = 'gemz.mp4'
 
-    # Send the image as a photo
-    bot.api.send_photo(
-      chat_id: callback_query.message.chat.id,
-      photo: image_file,
-      caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
-    )
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
     send_squad_invites(bot, callback_query.message)
   end
 
@@ -292,33 +349,139 @@ class SlCryptMineComboBot
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
 
-    # Prepare the image file for upload
-    image_path = 'dailycombos/swopin/swopin.jpg' # Replace with the actual path to your image file
-    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+    # Prepare the file for upload
+    base_path = 'dailycombos/swopin'
+    jpg_file = 'swopin.jpg'
+    mp4_file = 'swopin.mp4'
 
-    # Send the image as a photo
-    bot.api.send_photo(
-      chat_id: callback_query.message.chat.id,
-      photo: image_file,
-      caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
-    )
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
     send_squad_invites(bot, callback_query.message)
   end
 
-  def chaindrops_combo(bot, callback_query)
+  def chaincrops_combo(bot, callback_query)
     # Send the formatted message
     bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
 
-    # Prepare the image file for upload
-    image_path = 'dailycombos/chaindrops/chaindrops.jpg' # Replace with the actual path to your image file
-    image_file = Faraday::UploadIO.new(image_path, 'image/jpg')
+    # Prepare the file for upload
+    base_path = 'dailycombos/chaincrops'
+    jpg_file = 'chaincrops.jpg'
+    mp4_file = 'chaincrops.mp4'
 
-    # Send the image as a photo
-    bot.api.send_photo(
-      chat_id: callback_query.message.chat.id,
-      photo: image_file,
-      caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
-    )
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def catpaws_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
+
+    # Prepare the file for upload
+    base_path = 'dailycombos/catpaws'
+    jpg_file = 'catpaws.jpg'
+    mp4_file = 'catpaws.mp4'
+
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def tapcoin_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
+
+    # Prepare the file for upload
+    base_path = 'dailycombos/tapcoin'
+    jpg_file = 'tapcoin.jpg'
+    mp4_file = 'tapcoin.mp4'
+
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
     send_squad_invites(bot, callback_query.message)
   end
 
@@ -335,10 +498,12 @@ class SlCryptMineComboBot
     referrals_buttons = selected_referrals.map do |referral|
       Telegram::Bot::Types::InlineKeyboardButton.new(
         text: referral['bot'],
-        url: referral['url'],
+        url: referral['url']
       )
     end
-
+    referrals_buttons.each do |referral|
+      LOGGER.info("Referring #{message.chat.id} (#{message.chat.username}) to #{referral.text}")
+    end
     # Create inline keyboard markup with the selected buttons
     markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [referrals_buttons])
     message_text = "🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ ቻናላችንን ይቀላቀሉ"
@@ -360,7 +525,7 @@ class SlCryptMineComboBot
   end
 
   def send_terms_message(bot, message)
-    terms_of_use = UI_STRINGS['terms_of_use']
+    terms_of_use = UI_STRINGS['terms_of_use_amharic']
     LOGGER.info("Sending helpful message to user #{message.from.id}")
     bot.api.send_message(chat_id: message.chat.id, text: terms_of_use)
   rescue StandardError => e
@@ -368,8 +533,8 @@ class SlCryptMineComboBot
   end
 
   def send_privacy_message(bot, message)
-    privacy_policy = UI_STRINGS['privacy_policy']
-    LOGGER.info("Sending helpful message to user #{message.from.id}")
+    privacy_policy = UI_STRINGS['privacy_policy_amharic']
+    LOGGER.info("Sending Privacy Information to user #{message.from.id}")
     bot.api.send_message(chat_id: message.chat.id, text: privacy_policy)
   rescue StandardError => e
     LOGGER.error("Error in send_terms_of_use: #{e.class}: #{e.message}")
