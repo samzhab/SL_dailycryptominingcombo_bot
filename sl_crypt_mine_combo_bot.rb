@@ -97,10 +97,9 @@ class SlCryptMineComboBot
       LOGGER.info("Received update: #{update.to_json}")
       case update
       when Telegram::Bot::Types::Message
-        clear_screen(bot, update.from.id, update.message_id)
         respond_to_message(bot, update)
       when Telegram::Bot::Types::CallbackQuery
-        clear_screen(bot, update.from.id, update.message.message_id)
+        # clear_screen(bot, update.from.id, update.message.message_id)
         handle_callback_query(bot, update)
       end
     end
@@ -113,10 +112,10 @@ class SlCryptMineComboBot
       command = extract_command(message.text) # Extracting the first word of the command
       if !command.nil? && !command.empty?
         case command.first
-        when '/start', '/start@SlCryptMineComboBot'
-          send_start_message(bot, message)
-        when '/combos', '/combos@SlCryptMineComboBot'
-          send_data_with_buttons(bot, message)
+        when '/start', '/start@SlCryptMineComboBot','/combos', '/combos@SlCryptMineComboBot'
+          send_start_with_buttons(bot, message)
+        # when '/combos', '/combos@SlCryptMineComboBot',
+          # send_data_with_buttons(bot, message)
         when '/privacy', '/privacy@SlCryptMineComboBot'
           send_privacy_message(bot, message)
         when '/terms', '/terms@SlCryptMineComboBot'
@@ -158,12 +157,30 @@ class SlCryptMineComboBot
     bot.api.send_message(chat_id: message.chat.id, text: "#{key.capitalize} set to: #{link}")
   end
 
-  def send_start_message(bot, message)
-    bot.api.send_message(chat_id: message.chat.id,
-      text: "✔️ ቦት ተጀምሯል እና ለእርስዎ ዝግጁ ነው። /combos ይሞክሩ | The bot has started and is ready for you. try /combos")
+  def send_start_with_buttons(bot, message)
+    # Prepare message text
+    message_text = 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+
+    # Load buttons from YAML file
+    button_data = YAML.load_file('buttons.yml')['buttons']
+
+    # Randomly select 2 buttons
+    selected_buttons = button_data.sample(2).map do |button|
+      Telegram::Bot::Types::InlineKeyboardButton.new(
+        text: button['text'],
+        callback_data: button['callback_data']
+      )
+    end
+
+    # Create inline keyboard markup with the selected buttons
+    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [selected_buttons])
+
+    # Send message with inline keyboard
+    bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
   end
 
   def send_data_with_buttons(bot, message)
+    clear_screen(bot, message.from.id, message.message_id)
     # Prepare message text
     message_text = 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
 
@@ -232,6 +249,12 @@ class SlCryptMineComboBot
         catpaws_combo(bot, callback_query)
       when 'Tapcoin'
         tapcoin_combo(bot, callback_query)
+      when 'Sphynx'
+        sphynx_combo(bot, callback_query)
+      when 'Bird'
+        bird_combo(bot, callback_query)
+      when 'Goldverse'
+        goldverse_combo(bot, callback_query)
       else ''
       end
     rescue StandardError => e
@@ -240,7 +263,6 @@ class SlCryptMineComboBot
                            text: UI_STRINGS['request_error_info'])
     end
   end
-
 
   def hamster_combo(bot, callback_query)
     # Send the formatted message
@@ -487,6 +509,111 @@ class SlCryptMineComboBot
     send_squad_invites(bot, callback_query.message)
   end
 
+  def sphynx_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
+
+    # Prepare the file for upload
+    base_path = 'dailycombos/sphynx'
+    jpg_file = 'sphynx.jpg'
+    mp4_file = 'sphynx.mp4'
+
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def bird_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
+
+    # Prepare the file for upload
+    base_path = 'dailycombos/bird'
+    jpg_file = 'bird.jpg'
+    mp4_file = 'bird.mp4'
+
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
+    send_squad_invites(bot, callback_query.message)
+  end
+
+  def goldverse_combo(bot, callback_query)
+    # Send the formatted message
+    bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'የዛሬው combo ነው።')
+
+    # Prepare the file for upload
+    base_path = 'dailycombos/goldverse'
+    jpg_file = 'goldverse.jpg'
+    mp4_file = 'goldverse.mp4'
+
+    image_path = File.join(base_path, jpg_file)
+    video_path = File.join(base_path, mp4_file)
+
+    if File.exist?(image_path)
+      file = Faraday::UploadIO.new(image_path, 'image/jpg')
+      # Send the image as a photo
+      bot.api.send_photo(
+        chat_id: callback_query.message.chat.id,
+        photo: file,
+        caption: 'የዛሬውን combo ይመልከቱ! ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    elsif File.exist?(video_path)
+      file = Faraday::UploadIO.new(video_path, 'video/mp4')
+      # Send the video as a document
+      bot.api.send_document(
+        chat_id: callback_query.message.chat.id,
+        document: file,
+        caption: 'የዛሬውን combo ገና አላገኘንም። በኋላ ተመለሱ። ቻናላችንን ይቀላቀሉ @SamaelLabs'
+      )
+    else
+      bot.api.send_message(chat_id: callback_query.message.chat.id, text: 'ምንም ፋይል አልተገኘም።')
+    end
+
+    send_squad_invites(bot, callback_query.message)
+  end
+
   def send_squad_invites(bot, message)
     BotHelpers.validate_presence([bot, message], %w[bot message])
 
@@ -508,7 +635,7 @@ class SlCryptMineComboBot
     end
     # Create inline keyboard markup with the selected buttons
     markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: [referrals_buttons])
-    message_text = "🎁🎁🎁🎁🎁5 X ቴሌግራም ፕሪሚየም ስጦታዎች (3 ወራት) ለመሳተፍ ቻናላችንን ይቀላቀሉ"
+    message_text = "እነዚህን ሌሎች የ crypto ጨዋታዎችን ይሞክሩ"
     # Send message with inline keyboard
     bot.api.send_message(chat_id: message.chat.id, text: message_text, reply_markup: markup)
   rescue StandardError => e
